@@ -92,9 +92,9 @@ endfunction
 
 function! nextup#remove_file(file)
     if has('win32')
-        call system('del /s /q "' . a:file . '"')
+        call system('del /s /q "' . shellescape(a:file) . '"')
     else
-        call system('rm -rf ' . a:file)
+        call system('rm -rf ' . shellescape(a:file))
     endif
 endfunction
 
@@ -469,11 +469,12 @@ function! nextup#archive_completed()
     " Make sure archive directory exists
     let archive_dir = g:nextup_directory . '/archived'
     call mkdir(archive_dir, 'p')
+    let archive_dir = shellescape(archive_dir)
 
     " go through each directory with the _complete file
     " and move it into the archive dir
     for archive in archive_list
-        let dir = fnamemodify(archive, ':p:h')
+        let dir = shellescape(fnamemodify(archive, ':p:h'))
         call system(cmd . ' "' . dir . '" "' . archive_dir . '"')
     endfor
 endfunction
@@ -482,13 +483,14 @@ function! nextup#archive_todo(id)
     call nextup#load_index()
     let archive_dir = g:nextup_directory . '/archived'
     call mkdir(archive_dir, 'p')
+    let archive_dir = shellescape(archive_dir)
     let l:test = a:id . '/index.nextup'
     let l:ind = index(map(copy(g:nextup_todos_list), 'v:val =~ l:test'), 1)
     if l:ind < 0
         echo 'error: could not find todo with id "' . a:id . '"'
         return v:false
     endif
-    let l:dir = fnamemodify(g:nextup_todos_list[l:ind], ':p:h')
+    let l:dir = shellescape(fnamemodify(g:nextup_todos_list[l:ind], ':p:h'))
     if has('win32')
         call system('move "' . l:dir .'" "' . archive_dir . '"')
     else
@@ -509,13 +511,13 @@ function! nextup#unarchive_todo(id)
     call mkdir(g:nextup_directory . '/nextup/'. date, 'p')
 
     " get the path to the directory
-    let dir = fnamemodify(found[0], ':p:h')
+    let dir = shellescape(fnamemodify(found[0], ':p:h'))
     if has('win32')
         let cmd = 'move '
     else
         let cmd = 'mv '
     endif
-    call system(cmd . '"'. dir . '" "' . g:nextup_directory . '/nextup/' . date . '"')
+    call system(cmd . '"'. dir . '" "' . shellescape(g:nextup_directory) . '/nextup/' . date . '"')
     call nextup#add_to_index(g:nextup_todos_list, resolve(g:nextup_directory . '/nextup/' . date . '/' . a:id . '/index.nextup'))
     return v:true
 endfunction
