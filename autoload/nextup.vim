@@ -217,10 +217,10 @@ function! nextup#prompt_edit(...)
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('edit next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#edit_todo(l:id) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] updated.'
         endif
     endif
@@ -231,10 +231,10 @@ function! nextup#prompt_remove(...)
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('remove next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#remove_todo(l:id) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] removed.'
         endif
     endif
@@ -245,10 +245,10 @@ function! nextup#prompt_complete(...)
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('complete next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#complete_todo(l:id) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] completed.'
         endif
     endif
@@ -259,10 +259,10 @@ function! nextup#prompt_archive(...)
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('archive next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#archive_todo(l:id) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] archived.'
         endif
     endif
@@ -273,10 +273,10 @@ function! nextup#prompt_unarchive(...)
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('unarchive next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#unarchive_todo(l:id) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] unarchived.'
         endif
     endif
@@ -287,10 +287,10 @@ function! nextup#prompt_wip()
         let l:id = nextup#trim(a:1)
     else
         let l:id = nextup#trim(input('resume next-up: '))
-        echo "\n"
     endif
     if !empty(l:id)
         if nextup#complete_todo(l:id, 1) == v:true
+            echo "\n"
             echo 'Next-up [' . l:id . '] is now marked as WIP.'
         endif
     endif
@@ -608,8 +608,8 @@ function! nextup#load_todos_buffer(...)
         else
             let split_words = split(a:1, ' ')
             let total = nextup#filter_and_load_tags(split_words) + nextup#filter_and_load_days(split_words)
+            let file_index = total
             if len(total) > 0
-                let file_index = total
                 call uniq(sort(file_index, 'nextup#index_comparator'))
             endif
         endif
