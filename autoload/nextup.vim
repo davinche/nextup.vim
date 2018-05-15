@@ -558,7 +558,19 @@ function! nextup#list_todos(split, ...)
     endif
 
     if a:0 > 0
+        let s:last_load_list_args = a:1
         call nextup#load_todos_buffer(a:1)
+    else
+        if exists('s:last_load_list_args')
+            unlet s:last_load_list_args
+        endif
+        call nextup#load_todos_buffer()
+    endif
+endfunction
+
+function! nextup#reload_todos()
+    if exists('s:last_load_list_args')
+        call nextup#load_todos_buffer(s:last_load_list_args)
     else
         call nextup#load_todos_buffer()
     endif
