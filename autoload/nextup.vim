@@ -282,7 +282,7 @@ function! nextup#prompt_unarchive(...)
     endif
 endfunction
 
-function! nextup#prompt_wip()
+function! nextup#prompt_wip(...)
     if a:0 > 0
         let l:id = nextup#trim(a:1)
     else
